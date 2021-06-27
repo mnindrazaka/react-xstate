@@ -31,12 +31,10 @@ const coursesMachine = createMachine({
   },
 });
 
-const getCourses = async () => {
-  const res = await fetch(
+const getCourses = () => {
+  return fetch(
     "https://gw.ruangguru.com/skillacademy/discovery/course-categories?categorySerial=CAT-DZYYVTRF&page=1&pageSize=100"
-  );
-  const { data } = await res.json();
-  return data;
+  ).then(res => res.json()).then((res) => res.data);
 };
 
 export default function Courses() {
@@ -48,7 +46,11 @@ export default function Courses() {
     if (status === "loading") {
       send("FETCH");
     } else if (status === "success") {
-      send("FETCH_SUCCESS");
+      if (data.items.length === 0) {
+        send("FETCH_EMPTY");
+      } else {
+        send("FETCH_SUCCESS");
+      }
     } else if (status === "error") {
       send("FETCH_ERROR");
     }

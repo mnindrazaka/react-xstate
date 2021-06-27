@@ -5,6 +5,7 @@ const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const baseConfig = {
+  target: "web",
   entry: "./src",
   output: {
     path: path.resolve(__dirname, "build"),
